@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.RectF
 import android.util.Log
 import android.view.View
 
@@ -13,13 +14,25 @@ class GameView : View {
     private lateinit var paint: Paint
     private lateinit var brickBreaker: BrickBreaker
 
+
+
     constructor(context : Context, width : Int, height : Int) : super(context) {
 
         paint = Paint( )
         paint.strokeWidth = 25f
         paint.isAntiAlias = true
 
-        brickBreaker = BrickBreaker()
+        // Make the ball and paddle Rects
+        //canvas.drawCircle( 550f, 500f, 10f, paint )
+        val x = 550f
+        val y = 500f
+        val radius = 10f
+        val ballRect = RectF(x-radius, y-radius, x+radius, y+radius )
+        // Makes paddle
+        //canvas.drawLine( 470f, 2100f, 630f, 2100f, paint)
+        val paddleRect = RectF(470f, 2100f, 630f, 2100f)
+
+        brickBreaker = BrickBreaker(ballRect, paddleRect)
 
         val rows = 4
         val cols = 6
@@ -43,27 +56,38 @@ class GameView : View {
                     Log.w("MainActivity", "The vertical is $brickTop-$brickBottom")
                 }
 
-                brickBreaker.addBrick(rect,true, row, col)
+                brickBreaker.addBrick(rect,false, row, col)
             }
+
+
+
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         // Makes ball
-        canvas.drawCircle( 550f, 500f, 10f, paint )
+        val ballRect = brickBreaker.getBallRect()
+        val radius = brickBreaker.getRadius()
+        //canvas.drawCircle( 550f, 500f, 10f, paint )
+        canvas.drawCircle( (ballRect.left+radius), ballRect.top+radius, 10f, paint )
+
         // Makes paddle
-        canvas.drawLine( 470f, 2100f, 630f, 2100f, paint)
+        val paddleRect = brickBreaker.getPaddleRect()
+        //canvas.drawLine( 470f, 2100f, 630f, 2100f, paint)
+        canvas.drawLine( paddleRect.left, paddleRect.top, paddleRect.right, paddleRect.bottom, paint)
 
+        // Width the makes lines the thickness of bricks
         paint.strokeWidth = 50f
-        val colors = listOf(listOf(Color.RED, Color.BLUE), listOf(Color.YELLOW, Color.MAGENTA), listOf(Color.GREEN, Color.GRAY), listOf(Color.BLACK, Color.CYAN))
+        val colors = listOf(listOf(Color.RED, Color.BLUE), listOf(Color.YELLOW, Color.MAGENTA),
+            listOf(Color.GREEN, Color.GRAY), listOf(Color.BLACK, Color.CYAN))
 
-        // Paints colors on top of the Rects created for the blocks above
+        // Paints colors on top of the Rects created for the blocks
         for (row in 0..3) {
             for (col in 0 .. 5) {
                 val brick = brickBreaker.getBrick(row, col)
 
-                if (brick.isVisible) {
+                if (!brick.isHit) {
                     paint.color = colors[row][col%2]
 
                     val r = brick.rect
