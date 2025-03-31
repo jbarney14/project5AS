@@ -14,8 +14,6 @@ class GameView : View {
     private lateinit var paint: Paint
     private lateinit var brickBreaker: BrickBreaker
 
-
-
     constructor(context : Context, width : Int, height : Int) : super(context) {
 
         paint = Paint( )

@@ -17,6 +17,10 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+    fun updateModel() {
+        //how bricks will disappear
+    }
+
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         buildViewByCode( )
