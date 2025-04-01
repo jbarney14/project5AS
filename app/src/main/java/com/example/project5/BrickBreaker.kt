@@ -3,6 +3,7 @@ package com.example.project5
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
+import android.util.Log
 import androidx.transition.Visibility
 
 class BrickBreaker {
@@ -40,7 +41,7 @@ class BrickBreaker {
 
 
     // Each Brick has a Rect, status, ...
-    inner class Brick (val rect: Rect, val isHit: Boolean) {
+    inner class Brick (val rect: Rect, var isHit: Boolean) {
         fun getVisibility() : Boolean {
             return this.isHit
         }
@@ -48,7 +49,24 @@ class BrickBreaker {
 
     fun update() {
         moveBall()
+
+        for (row in bricks!!) {
+            for (brick in row) {
+                val brickRectF = RectF(
+                    brick.rect.left.toFloat(), brick.rect.top.toFloat(),
+                    brick.rect.right.toFloat(), brick.rect.bottom.toFloat()
+                )
+
+                if (RectF.intersects(ballRect!!, brickRectF) && !brick.isHit) {
+                    brick.isHit = true // Mark the brick as hit
+                    Log.w("BrickBreaker", "collision!") //debug
+                    ballSpeedY = -ballSpeedY // Reverse ball direction
+                    break
+                }
+            }
+        }
     }
+
 
     fun startGame(direction: Boolean) {
         ballSpeedX = if (direction) 10f else -10f // Start at 45 degrees
@@ -64,7 +82,6 @@ class BrickBreaker {
 
         val newLeft = (xPosition - paddleWidth!! / 2).coerceIn(0f, 550f - paddleWidth!!)
         paddleRect?.offsetTo(newLeft, paddleRect!!.top) // Move paddle
-
     }
 
     fun addBrick(rect: Rect, isHit: Boolean, row: Int, col: Int) {
