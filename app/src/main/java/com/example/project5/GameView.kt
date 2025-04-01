@@ -56,9 +56,10 @@ class GameView : View {
 
                 brickBreaker.addBrick(rect,false, row, col)
             }
+    }
 
-
-
+    fun getGame() : BrickBreaker {
+        return brickBreaker
     }
 
     override fun onDraw(canvas: Canvas) {
