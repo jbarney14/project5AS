@@ -14,8 +14,6 @@ class GameView : View {
     private lateinit var paint: Paint
     private lateinit var brickBreaker: BrickBreaker
 
-
-
     constructor(context : Context, width : Int, height : Int) : super(context) {
 
         paint = Paint( )
@@ -58,13 +56,17 @@ class GameView : View {
 
                 brickBreaker.addBrick(rect,false, row, col)
             }
+    }
 
-
-
+    fun getGame() : BrickBreaker {
+        return brickBreaker
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
+        paint.strokeWidth = 25f
+        paint.color = Color.CYAN
 
         // Makes ball
         val ballRect = brickBreaker.getBallRect()

@@ -3,6 +3,7 @@ package com.example.project5
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
+import android.util.Log
 import androidx.transition.Visibility
 
 class BrickBreaker {
@@ -21,7 +22,8 @@ class BrickBreaker {
     private var deltaTime = 0
     private var ballGoingDown : Boolean = false
     private var ballGoingLeft : Boolean = false
-    private var ballSpeed = 0f
+    private var ballSpeedX = 0f
+    private var ballSpeedY = 0f
     private var paddleSpeed = 0f
     private var blocksLeft = 24
 
@@ -39,10 +41,49 @@ class BrickBreaker {
 
 
     // Each Brick has a Rect, status, ...
-    inner class Brick (val rect: Rect, val isHit: Boolean) {
+    inner class Brick (val rect: Rect, var isHit: Boolean) {
         fun getVisibility() : Boolean {
             return this.isHit
         }
+    }
+
+    fun update() {
+        moveBall()
+
+        for (row in bricks!!) {
+            for (brick in row) {
+                val brickRectF = RectF(
+                    brick.rect.left.toFloat(), brick.rect.top.toFloat(),
+                    brick.rect.right.toFloat(), brick.rect.bottom.toFloat()
+                )
+
+                if (RectF.intersects(ballRect!!, brickRectF) && !brick.isHit) {
+                    brick.isHit = true // Mark the brick as hit
+                    Log.w("BrickBreaker", "collision!") //debug
+                    ballSpeedY = -ballSpeedY // Reverse ball direction
+                    break
+                }
+            }
+        }
+
+    }
+
+
+    fun startGame(direction: Boolean) {
+        ballSpeedX = if (direction) 10f else -10f // Start at 45 degrees
+        ballSpeedY = 10f
+    }
+
+    private fun moveBall() {
+
+        ballRect?.offset(ballSpeedX, ballSpeedY)
+    }
+
+    fun movePaddle(xPosition: Float) {
+        val paddleWidth = paddleRect?.width()
+
+        val newLeft = (xPosition - paddleWidth!! / 2).coerceIn(0f, 550f - paddleWidth!!)
+        paddleRect?.offsetTo(newLeft, paddleRect!!.top) // Move paddle
     }
 
     fun addBrick(rect: Rect, isHit: Boolean, row: Int, col: Int) {
@@ -74,6 +115,16 @@ class BrickBreaker {
     fun getRadius() : Float {
         return ballRadius
     }
+
+   /* fun duckHit(): Boolean {
+        return duckRect!!.intersects(
+            bulletCenter!!.x - bulletRadius, bulletCenter!!.y - bulletRadius,
+            bulletCenter!!.x + bulletRadius, bulletCenter!!.y + bulletRadius
+        )
+    }
+
+
+    */
 
     /*
     fun getBallRadius(): Float {
