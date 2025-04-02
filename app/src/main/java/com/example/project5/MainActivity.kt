@@ -17,11 +17,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var gameView : GameView
 
     companion object {
-        private var level: Int = 0
-        private var bestLevel: Int = 0
+        var level: Int = 0
+        var bestLevel: Int = 0
 
         private lateinit var sharedPreferences: SharedPreferences
-        private lateinit var editor: SharedPreferences.Editor
+        lateinit var editor: SharedPreferences.Editor
 
         fun initializePreferences(context: Context) {
             sharedPreferences = context.getSharedPreferences("best_level", Context.MODE_PRIVATE)

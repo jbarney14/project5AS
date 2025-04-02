@@ -60,14 +60,19 @@ class BrickBreaker {
                 if (RectF.intersects(ballRect!!, brickRectF) && !brick.isHit) {
                     brick.isHit = true // Mark the brick as hit
                     Log.w("BrickBreaker", "collision!") //debug
-                    ballSpeedY = -ballSpeedY // Reverse ball direction
+                    MainActivity.level++
+                    if (MainActivity.level > MainActivity.bestLevel) {
+                        MainActivity.bestLevel = MainActivity.level
+                        MainActivity.editor.putInt("best_level", MainActivity.bestLevel).apply()
+                    }
+                    ballSpeedY = -ballSpeedY
                     break
                 }
             }
         }
-
+        checkWallsTouch()
+        checkPaddleTouch()
     }
-
 
     fun startGame(direction: Boolean) {
         ballSpeedX = if (direction) 10f else -10f // Start at 45 degrees
@@ -75,7 +80,6 @@ class BrickBreaker {
     }
 
     private fun moveBall() {
-
         ballRect?.offset(ballSpeedX, ballSpeedY)
     }
 
@@ -84,6 +88,23 @@ class BrickBreaker {
 
         val newLeft = (xPosition - paddleWidth!! / 2).coerceIn(0f, 550f - paddleWidth!!)
         paddleRect?.offsetTo(newLeft, paddleRect!!.top) // Move paddle
+    }
+
+    fun checkWallsTouch() {
+
+       if(ballRect!!.right < 0) {
+           ballSpeedX = -ballSpeedX
+       } else {
+           if(ballRect!!.left > 1080) {
+            ballSpeedX = -ballSpeedX
+           }
+       }
+    }
+
+    fun checkPaddleTouch(){
+        if (RectF.intersects(ballRect!!, paddleRect!!)) {
+            ballSpeedY = -ballSpeedY
+        }
     }
 
     fun addBrick(rect: Rect, isHit: Boolean, row: Int, col: Int) {
