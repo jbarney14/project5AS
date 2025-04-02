@@ -27,13 +27,21 @@ class BrickBreaker {
     private var paddleSpeed = 0f
     private var blocksLeft = 24
 
-    private var bricks: MutableList<MutableList<Brick>>? = mutableListOf(mutableListOf(), mutableListOf(),
-        mutableListOf(), mutableListOf())
+
+    //private var bricks: MutableList<MutableList<Brick>>? = mutableListOf(mutableListOf(), mutableListOf(),
+      //  mutableListOf(), mutableListOf())
+
+
+    private var bricks: MutableList<MutableList<Brick>>? = mutableListOf()
 
     private var ballRect: RectF? = null
     private var paddleRect: RectF? = null
 
-    constructor(bRect: RectF?, pRect: RectF?) {
+    constructor(rows: Int, bRect: RectF?, pRect: RectF?) {
+
+        for (i in 0..rows-1) {
+            bricks!!.add(mutableListOf())
+        }
 
         ballRect = bRect
         paddleRect = pRect
@@ -50,12 +58,18 @@ class BrickBreaker {
     fun update() {
         moveBall()
 
+        var gameWonFlag = true
+
         for (row in bricks!!) {
             for (brick in row) {
                 val brickRectF = RectF(
                     brick.rect.left.toFloat(), brick.rect.top.toFloat(),
                     brick.rect.right.toFloat(), brick.rect.bottom.toFloat()
                 )
+
+                if (!brick.isHit) {
+                    gameWonFlag = false
+                }
 
                 if (RectF.intersects(ballRect!!, brickRectF) && !brick.isHit) {
                     brick.isHit = true // Mark the brick as hit
@@ -68,10 +82,30 @@ class BrickBreaker {
                     ballSpeedY = -ballSpeedY
                     break
                 }
+
             }
         }
+
+        if (gameWon()) {
+            val bricksHit = MainActivity.level
+            Log.w("MainActivity", "Hit all blocks, $bricksHit")
+        }
+
+        // Some way of marking the end of the game
         checkWallsTouch()
         checkPaddleTouch()
+    }
+
+    fun gameWon() : Boolean {
+        var flag = true
+        for (row in bricks!!) {
+            for (brick in row) {
+                if (!brick.isHit) {
+                    flag = false
+                }
+            }
+        }
+        return flag
     }
 
     fun startGame(direction: Boolean) {
@@ -94,7 +128,9 @@ class BrickBreaker {
 
        if(ballRect!!.left < 0) {
            ballSpeedX = -ballSpeedX
-       } else {
+       } else if ( ballRect!!.top < 0) {
+           ballSpeedY = -ballSpeedY
+       }else {
            if(ballRect!!.right > 1080) {
             ballSpeedX = -ballSpeedX
            }

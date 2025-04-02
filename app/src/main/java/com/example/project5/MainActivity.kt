@@ -38,15 +38,12 @@ class MainActivity : AppCompatActivity() {
     private var gameStart : Int = 0
 
     fun updateModel() {
-
         var game : BrickBreaker = gameView.getGame()
-
         game.update()
 
     }
 
     fun updateView() {
-
         gameView.postInvalidate()
     }
 
@@ -58,18 +55,7 @@ class MainActivity : AppCompatActivity() {
     fun buildViewByCode() {
         var width : Int = resources.displayMetrics.widthPixels
         var height : Int = resources.displayMetrics.heightPixels
-        /*
-        var rectangle : Rect = Rect( 0, 0, 0, 0 )
-        window.decorView.getWindowVisibleDisplayFrame( rectangle )
-        Log.w( "MainActivity", "width = " + width )
-        Log.w( "MainActivity", "height = " + height )
-        Log.w( "MainActivity", "rectangle left = " + rectangle.left )
-        Log.w( "MainActivity", "rectangle right = " + rectangle.right)
-        Log.w( "MainActivity", "status bar height = " + rectangle.top )
-        Log.w( "MainActivity", "rectangle bottom = " + rectangle.bottom)
-        var statusBarHeight : Int = rectangle.top
 
-         */
 
         // Do I need to put width and height back into the GameView?
         gameView = GameView( this, resources.displayMetrics.widthPixels, resources.displayMetrics.heightPixels)
@@ -87,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
-                Log.w("MainActivity", "Click happened!")
+                //Log.w("MainActivity", "Click happened!")
                 val direction = Math.random() < 0.5 // Randomly choose left or right
                 if (gameStart == 0) { // Ensure game starts only once
                     gameStart++
@@ -96,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             MotionEvent.ACTION_MOVE -> {
-                Log.w("MainActivity", "Movement of the mouse")
+                //Log.w("MainActivity", "Movement of the mouse")
                 game.movePaddle(event.x) // Move the paddle based on touch position
             }
         }
