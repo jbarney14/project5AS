@@ -75,8 +75,8 @@ class BrickBreaker {
     }
 
     fun startGame(direction: Boolean) {
-        ballSpeedX = if (direction) 10f else -10f // Start at 45 degrees
-        ballSpeedY = 10f
+        ballSpeedX = if (direction) 30f else -30f // Start at 45 degrees
+        ballSpeedY = 30f
     }
 
     private fun moveBall() {
@@ -86,16 +86,16 @@ class BrickBreaker {
     fun movePaddle(xPosition: Float) {
         val paddleWidth = paddleRect?.width()
 
-        val newLeft = (xPosition - paddleWidth!! / 2).coerceIn(0f, 550f - paddleWidth!!)
+        val newLeft = (xPosition - paddleWidth!! / 2).coerceIn(0f, 1080f - paddleWidth!!)
         paddleRect?.offsetTo(newLeft, paddleRect!!.top) // Move paddle
     }
 
     fun checkWallsTouch() {
 
-       if(ballRect!!.right < 0) {
+       if(ballRect!!.left < 0) {
            ballSpeedX = -ballSpeedX
        } else {
-           if(ballRect!!.left > 1080) {
+           if(ballRect!!.right > 1080) {
             ballSpeedX = -ballSpeedX
            }
        }
@@ -104,6 +104,8 @@ class BrickBreaker {
     fun checkPaddleTouch(){
         if (RectF.intersects(ballRect!!, paddleRect!!)) {
             ballSpeedY = -ballSpeedY
+
+            // Sound code
         }
     }
 
@@ -137,41 +139,5 @@ class BrickBreaker {
         return ballRadius
     }
 
-   /* fun duckHit(): Boolean {
-        return duckRect!!.intersects(
-            bulletCenter!!.x - bulletRadius, bulletCenter!!.y - bulletRadius,
-            bulletCenter!!.x + bulletRadius, bulletCenter!!.y + bulletRadius
-        )
-    }
-
-
-    */
-
-    /*
-    fun getBallRadius(): Float {
-        return ballRadius
-    }
-    fun getBallCenter(): Point {
-        return ballCenter
-    }
-    fun setBallCenter(x: Int, y: Int) {
-        ballCenter = Point(x,y)
-    }
-    fun paddleStart() : Point {
-        return paddleStart
-    }
-    fun setPaddleStart(x: Int, y: Int) {
-        paddleStart = Point(x,y)
-    }
-    fun getPaddleEnd() : Point {
-        return paddleEnd
-    }
-    fun setPaddleEnd(x: Int, y: Int) {
-        paddleEnd = Point(x,y)
-    }
-
-     */
-
-    // Some kind of loop function to check each block to see if it was hit
 
 }

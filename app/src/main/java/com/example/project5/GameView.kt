@@ -24,7 +24,7 @@ class GameView : View {
         //canvas.drawCircle( 550f, 500f, 10f, paint )
         val x = 550f
         val y = 500f
-        val radius = 10f
+        val radius = 15f
         val ballRect = RectF(x-radius, y-radius, x+radius, y+radius )
         // Makes paddle
         //canvas.drawLine( 470f, 2100f, 630f, 2100f, paint)

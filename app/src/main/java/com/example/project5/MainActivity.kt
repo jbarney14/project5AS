@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
                 if (gameStart == 0) { // Ensure game starts only once
                     gameStart++
                     game.startGame(direction)
-                    updateModel()
+
                 }
             }
             MotionEvent.ACTION_MOVE -> {
