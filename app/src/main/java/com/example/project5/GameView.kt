@@ -40,7 +40,7 @@ class GameView : View {
         val width = width/cols
         val height = 50
 
-        brickBreaker = BrickBreaker(rows, ballRect, paddleRect)
+        brickBreaker = BrickBreaker(context, rows, ballRect, paddleRect)
 
         // Creates a Rect for each block
         for (row in 0..<rows)

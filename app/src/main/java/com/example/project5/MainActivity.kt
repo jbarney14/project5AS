@@ -3,6 +3,7 @@ package com.example.project5
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Rect
+import android.media.SoundPool
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
@@ -33,7 +34,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         initializePreferences(this)
         bestLevel = MainActivity.sharedPreferences.getInt("best_level", 0)
-        }
+
+        //var pooBuilder : SoundPool.Builder = SoundPool.Builder()
+        //var pool : SoundPool = pooBuilder.build()
+        //var paddleSoundId : Int = pool.load(this, R.raw.ball_bouncing, 1)
+    }
 
     private var gameStart : Int = 0
 

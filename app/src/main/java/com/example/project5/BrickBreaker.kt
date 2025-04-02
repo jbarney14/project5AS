@@ -1,12 +1,14 @@
 package com.example.project5
 
+import android.content.Context
 import android.graphics.Point
 import android.graphics.Rect
 import android.graphics.RectF
+import android.media.SoundPool
 import android.util.Log
 import androidx.transition.Visibility
 
-class BrickBreaker {
+class BrickBreaker (private val context: Context) {
 
     /*
     private var ballCenter : Point = Point(550, 500)
@@ -27,17 +29,19 @@ class BrickBreaker {
     private var paddleSpeed = 0f
     private var blocksLeft = 24
 
-
     //private var bricks: MutableList<MutableList<Brick>>? = mutableListOf(mutableListOf(), mutableListOf(),
-      //  mutableListOf(), mutableListOf())
-
+    //  mutableListOf(), mutableListOf())
 
     private var bricks: MutableList<MutableList<Brick>>? = mutableListOf()
 
     private var ballRect: RectF? = null
     private var paddleRect: RectF? = null
 
-    constructor(rows: Int, bRect: RectF?, pRect: RectF?) {
+    var pooBuilder : SoundPool.Builder? = null
+    var pool : SoundPool? = null
+    var paddleSoundId : Int = 0
+
+    constructor(context: Context, rows: Int, bRect: RectF?, pRect: RectF?) :this(context) {
 
         for (i in 0..rows-1) {
             bricks!!.add(mutableListOf())
@@ -45,6 +49,10 @@ class BrickBreaker {
 
         ballRect = bRect
         paddleRect = pRect
+
+        pooBuilder = SoundPool.Builder()
+        pool = pooBuilder!!.build()
+        paddleSoundId = pool!!.load(context, R.raw.ball_bouncing, 1)
     }
 
 
@@ -142,6 +150,7 @@ class BrickBreaker {
             ballSpeedY = -ballSpeedY
 
             // Sound code
+            pool!!.play(paddleSoundId, 1f, 1f, 1, 0, 1f)
         }
     }
 
