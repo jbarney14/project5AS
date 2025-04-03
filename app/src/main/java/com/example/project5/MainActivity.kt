@@ -19,6 +19,8 @@ import java.util.Timer
 
 class MainActivity : AppCompatActivity() {
 
+    // Nathan Mitchell and Jake Barney
+
     private lateinit var gameView : GameView
 
     companion object {
@@ -39,6 +41,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializePreferences(this)
+        /*
+        editor.putInt("best_level", 0)
+        editor.commit()
+        */
+
         bestLevel = MainActivity.sharedPreferences.getInt("best_level", 0)
 
         //var pooBuilder : SoundPool.Builder = SoundPool.Builder()

@@ -52,7 +52,7 @@ class BrickBreaker (private val context: Context) {
 
         pooBuilder = SoundPool.Builder()
         pool = pooBuilder!!.build()
-       // paddleSoundId = pool!!.load(context, R.raw.ball_bouncing, 1)
+        paddleSoundId = pool!!.load(context, R.raw.ball_bouncing, 1)
     }
 
 
@@ -66,8 +66,6 @@ class BrickBreaker (private val context: Context) {
     fun update() {
         moveBall()
 
-        var gameWonFlag = true
-
         for (row in bricks!!) {
             for (brick in row) {
                 val brickRectF = RectF(
@@ -75,9 +73,6 @@ class BrickBreaker (private val context: Context) {
                     brick.rect.right.toFloat(), brick.rect.bottom.toFloat()
                 )
 
-                if (!brick.isHit) {
-                    gameWonFlag = false
-                }
 
                 if (RectF.intersects(ballRect!!, brickRectF) && !brick.isHit) {
                     brick.isHit = true // Mark the brick as hit
@@ -92,11 +87,6 @@ class BrickBreaker (private val context: Context) {
                 }
 
             }
-        }
-
-        if (gameWon()) {
-            val bricksHit = MainActivity.level
-            Log.w("MainActivity", "Hit all blocks, $bricksHit")
         }
 
         // Some way of marking the end of the game
@@ -156,7 +146,7 @@ class BrickBreaker (private val context: Context) {
     }
 
     fun checkGameEnd() {
-        if(ballRect!!.top > 2340) {
+        if(ballRect!!.top > 2340 || gameWon()) {
             MainActivity.endText = endGameText()
             MainActivity.gameOver = true
         }
@@ -166,7 +156,7 @@ class BrickBreaker (private val context: Context) {
         if (MainActivity.level > MainActivity.bestLevel) {
             return "New Best Score!!"
         } else {
-            return "Highscore: " + MainActivity.bestLevel.toString()
+            return "Highscore is still: " + MainActivity.bestLevel.toString()
         }
     }
 
