@@ -2,11 +2,15 @@ package com.example.project5
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Color
 import android.graphics.Rect
 import android.media.SoundPool
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.MotionEvent
+import android.view.ViewGroup
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,6 +24,8 @@ class MainActivity : AppCompatActivity() {
     companion object {
         var level: Int = 0
         var bestLevel: Int = 0
+        var gameOver : Boolean = false
+        var endText : String = ""
 
         private lateinit var sharedPreferences: SharedPreferences
         lateinit var editor: SharedPreferences.Editor
@@ -45,12 +51,33 @@ class MainActivity : AppCompatActivity() {
     fun updateModel() {
         var game : BrickBreaker = gameView.getGame()
         game.update()
-
+        showGameOverMessage()
     }
 
     fun updateView() {
         gameView.postInvalidate()
     }
+
+    fun showGameOverMessage() {
+        if (gameOver) {
+            val textView = TextView(this).apply {
+                text = MainActivity.level.toString() + " bricks hit, " +
+                        (24 - MainActivity.level).toString() + " bricks left\n" +
+                        MainActivity.endText
+                textSize = 24f
+                setTextColor(Color.WHITE)
+                gravity = Gravity.CENTER
+                setBackgroundColor(Color.BLACK)
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            }
+
+            runOnUiThread { setContentView(textView) }
+        }
+    }
+
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)

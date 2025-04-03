@@ -52,7 +52,7 @@ class BrickBreaker (private val context: Context) {
 
         pooBuilder = SoundPool.Builder()
         pool = pooBuilder!!.build()
-        paddleSoundId = pool!!.load(context, R.raw.ball_bouncing, 1)
+       // paddleSoundId = pool!!.load(context, R.raw.ball_bouncing, 1)
     }
 
 
@@ -102,6 +102,7 @@ class BrickBreaker (private val context: Context) {
         // Some way of marking the end of the game
         checkWallsTouch()
         checkPaddleTouch()
+        checkGameEnd()
     }
 
     fun gameWon() : Boolean {
@@ -151,6 +152,21 @@ class BrickBreaker (private val context: Context) {
 
             // Sound code
             pool!!.play(paddleSoundId, 1f, 1f, 1, 0, 1f)
+        }
+    }
+
+    fun checkGameEnd() {
+        if(ballRect!!.top > 2340) {
+            MainActivity.endText = endGameText()
+            MainActivity.gameOver = true
+        }
+    }
+
+    fun endGameText() : String {
+        if (MainActivity.level > MainActivity.bestLevel) {
+            return "New Best Score!!"
+        } else {
+            return "Highscore: " + MainActivity.bestLevel.toString()
         }
     }
 
