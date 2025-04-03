@@ -41,10 +41,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initializePreferences(this)
+
         /*
         editor.putInt("best_level", 0)
         editor.commit()
-        */
+    */
 
         bestLevel = MainActivity.sharedPreferences.getInt("best_level", 0)
 

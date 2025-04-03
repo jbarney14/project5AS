@@ -31,11 +31,11 @@ class GameView : View {
         val ballRect = RectF(x-radius, y-radius, x+radius, y+radius )
         // Makes paddle
         //canvas.drawLine( 470f, 2100f, 630f, 2100f, paint)
-        //val paddleRect = RectF(470f, 2100f, 630f, 2100f)
-        val paddleRect = RectF(470f, 1500f, 630f, 1500f)
+        val paddleRect = RectF(470f, 2100f, 630f, 2100f)
+        //val paddleRect = RectF(470f, 1500f, 630f, 1500f)
 
-        //rows = 4
-        rows = 1
+        rows = 4
+        //rows = 1
         cols = 6
         val width = width/cols
         val height = 50

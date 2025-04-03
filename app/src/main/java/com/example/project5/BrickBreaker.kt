@@ -78,10 +78,7 @@ class BrickBreaker (private val context: Context) {
                     brick.isHit = true // Mark the brick as hit
                     Log.w("BrickBreaker", "collision!") //debug
                     MainActivity.level++
-                    if (MainActivity.level > MainActivity.bestLevel) {
-                        MainActivity.bestLevel = MainActivity.level
-                        MainActivity.editor.putInt("best_level", MainActivity.bestLevel).apply()
-                    }
+
                     ballSpeedY = -ballSpeedY
                     break
                 }
@@ -92,7 +89,9 @@ class BrickBreaker (private val context: Context) {
         // Some way of marking the end of the game
         checkWallsTouch()
         checkPaddleTouch()
-        checkGameEnd()
+        if (!MainActivity.gameOver) {
+            checkGameEnd()
+        }
     }
 
     fun gameWon() : Boolean {
@@ -153,11 +152,20 @@ class BrickBreaker (private val context: Context) {
     }
 
     fun endGameText() : String {
+
+        Log.w(
+            "BrickBreaker",
+            "The level is ${MainActivity.level} and best is ${MainActivity.bestLevel}"
+        )
+
         if (MainActivity.level > MainActivity.bestLevel) {
+            MainActivity.bestLevel = MainActivity.level
+            MainActivity.editor.putInt("best_level", MainActivity.bestLevel).apply()
             return "New Best Score!!"
         } else {
-            return "Highscore is still: " + MainActivity.bestLevel.toString()
+            return "Highscore is: " + MainActivity.bestLevel.toString()
         }
+
     }
 
     fun addBrick(rect: Rect, isHit: Boolean, row: Int, col: Int) {
